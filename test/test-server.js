@@ -33,7 +33,7 @@ describe('Shopping List', function() {
            .post('/items/')
            .send({name: 'Bananas'})
            .end(function(err, res){
-               res.should.have.status(201);
+               res.should.have.status(200);
                res.should.be.json;
                res.body.should.be.a('object');
                res.body.should.have.property('id');
@@ -48,7 +48,7 @@ describe('Shopping List', function() {
            .put('/items/0')
            .send({'name': 'Green Beans'})
            .end(function(err, res){
-               res.should.have.status(201);
+               res.should.have.status(200);
                res.should.be.json;
                res.body.should.be.a('object');
                res.body.should.have.property('id');

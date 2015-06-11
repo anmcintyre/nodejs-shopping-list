@@ -45,7 +45,7 @@ app.put('/items/:id', jsonParser, function(req, res){
             break;
         }
     }
-    res.status(201).json(item);
+    res.status(200).json(item);
 })
 
 app.delete('/items/:id', jsonParser, function(req, res){
