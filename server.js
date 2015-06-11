@@ -37,13 +37,15 @@ app.post('/items', jsonParser, function(req, res) {
 
 app.put('/items/:id', jsonParser, function(req, res){
     var id = req.params.id;
+    var item = null;
     for (var i=0; i<storage.items.length; i++){
-        if (storage.items[i].id === parseInt(id)){            
-            storage.items.name=req.body.name
+        if (storage.items[i].id === parseInt(id)){                      
+            storage.items[i].name=req.body.name
+            item = storage.items[i];
             break;
         }
     }
-    res.status(204);
+    res.status(201).json(item);
 })
 
 app.delete('/items/:id', jsonParser, function(req, res){
@@ -62,3 +64,6 @@ app.delete('/items/:id', jsonParser, function(req, res){
 
 
 app.listen(process.env.PORT || 8080);
+
+exports.app = app;
+exports.storage = storage;
