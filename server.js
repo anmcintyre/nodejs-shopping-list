@@ -30,7 +30,10 @@ app.post('/items', jsonParser, function(req, res) {
     if (!req.body) {
         return res.sendStatus(400);
     }
-
+    var name = req.body.name;
+    if (name === null){
+      res.status(404).end();
+    }      
     var item = storage.add(req.body.name);
     res.status(201).json(item);    
 });
@@ -45,6 +48,10 @@ app.put('/items/:id', jsonParser, function(req, res){
             break;
         }
     }
+    if (item === null){
+      res.status(404).end();
+      return;
+    }
     res.status(200).json(item);
 })
 
@@ -53,10 +60,14 @@ app.delete('/items/:id', jsonParser, function(req, res){
     var delItem = null;
     for (var i=0; i<storage.items.length; i++){
         if (storage.items[i].id === parseInt(id)){
-            delItem = storage.items[i].id;
+            delItem = storage.items[i];
             storage.items.splice(i, 1);
             break;
         }
+    }
+    if (delItem === null){
+       res.status(404).end();
+       return;
     }
     res.status(200).json(delItem);
 });

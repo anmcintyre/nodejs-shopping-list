@@ -33,13 +33,14 @@ describe('Shopping List', function() {
            .post('/items/')
            .send({name: 'Bananas'})
            .end(function(err, res){
-               res.should.have.status(200);
+               res.should.have.status(201);
                res.should.be.json;
                res.body.should.be.a('object');
                res.body.should.have.property('id');
                res.body.should.have.property('name');
                res.body.id.should.be.a('number');
                res.body.name.should.equal('Bananas');
+               storage.items.length.should.equal(4);          
                done();
         });
     });
@@ -59,7 +60,36 @@ describe('Shopping List', function() {
               done();
         });
     });
-    it('should delete an item on delete');
-    it('should responds correctly if trying to delete an item that does not exist');
-    it('should respond correctly if trying to edit an item that does not exist');
+    it('should delete an item on delete', function(done){
+         chai.request(app)
+           .delete('/items/1')
+           .end(function(err, res){
+               res.should.have.status(200);
+               res.should.be.json;
+               res.body.should.be.a('object');
+               res.body.should.have.property('id');
+               res.body.should.have.property('name');
+               res.body.id.should.be.a('number');
+               res.body.id.should.be.equal(1);
+               res.body.name.should.equal('Tomatoes');
+               storage.items.length.should.equal(3);
+               done();
+        });     
+    });
+    it('should return 404 if deleting an element that does not exist', function(done){
+         chai.request(app)
+           .delete('/items/10')
+           .end(function(err, res){
+               res.should.have.status(404);
+               done();
+        });      
+    });
+    it('should return 404 if trying to add an item without sending a name', function(done){
+         chai.request(app)
+           .put('/items/10')
+           .end(function(err, res){
+               res.should.have.status(404);
+               done();
+        });      
+    });
 });
